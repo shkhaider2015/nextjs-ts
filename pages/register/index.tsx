@@ -3,7 +3,7 @@ import React from "react";
 import { Navbar, Layout } from "../../components"
 import { Register as RegisterScreen } from "../../screens";
 
-const Register = () => {
+const Register = ({data}:{data:string}) => {
     return <Layout>
         <Head>
             <title>Register</title>
@@ -12,5 +12,14 @@ const Register = () => {
         <RegisterScreen />
     </Layout>
 }
+
+export async function getServerSideProps() {
+    // Fetch data from external API
+    return {
+        props: {
+            data: "my data"
+        }
+    }
+  }
 
 export default Register;
