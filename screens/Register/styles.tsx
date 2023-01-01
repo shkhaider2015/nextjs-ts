@@ -5,6 +5,8 @@ const RegisterWrapper = styled.div`
    min-width: 100vw;
    overflow-x: hidden;
    overflow-y: auto;
+   display: grid;
+   place-items: center;
 `
 
 export default RegisterWrapper;
