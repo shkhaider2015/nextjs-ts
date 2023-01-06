@@ -16,6 +16,7 @@
     "@types/react-dom": "18.0.9",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
+    "formidable": "^2.1.1",
     "formik": "^2.2.9",
     "next": "13.0.7",
     "react": "18.2.0",
@@ -26,6 +27,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/formidable": "^2.0.5",
     "@types/styled-components": "^5.1.26",
     "prisma": "^4.8.0"
   }
