@@ -15,25 +15,8 @@ import * as yup from 'yup';
 
 const Register = () => {
     return <RegisterWrapper>
-        {/* <InputField 
-                LeftIcon={MdEmail} 
-                type={'email'}
-                maxLength={30}
-                />
-            <InputField
-                LeftIcon={RiLockPasswordFill}  
-                type={'password'}
-                maxLength={20}
-            />
-            <InputField 
-                LeftIcon={RiLockPasswordFill}  
-                type={'password'} 
-                maxLength={20} 
-            />
-            <Button type="submit" width="50%" title="Sign Up" /> */}
-
             <Formik
-       initialValues={{ email: '', password: '', confirmPassword : '' }}
+       initialValues={{ name: '', email: '', password: '', confirmPassword : '' }}
        validationSchema={schema}
        onSubmit={(values, { setSubmitting }) => {
          setTimeout(() => {
@@ -54,7 +37,16 @@ const Register = () => {
        }) => (
          <form onSubmit={handleSubmit} style={{ width: '30%', padding: '20px', backgroundColor: '#1d1d1d', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '20px' }} >
            <InputField 
-                
+                LeftIcon={MdEmail} 
+                type={'text'}
+                name={'name'}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.name}
+                maxLength={30}
+                error={errors.name && touched.name ? errors.name : "" }
+                />
+           <InputField 
                 LeftIcon={MdEmail} 
                 type={'email'}
                 name={'email'}
@@ -92,6 +84,10 @@ const Register = () => {
 }
 
 const schema = yup.object({
+  name: yup
+    .string()
+    .min(4, "Please enter minimum of 4 charchters")
+    .required('Please enter your name.'),
     email: yup
     .string()
     .required('Please enter your email.'),
