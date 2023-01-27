@@ -7,7 +7,6 @@ import {
   Formik,
 } from 'formik';
 import * as yup from 'yup';
-import { signIn } from "next-auth/react";
 
 const Login = () => {
     return <LoginWrapper>
@@ -16,14 +15,7 @@ const Login = () => {
        validationSchema={schema}
        onSubmit={(values, { setSubmitting }) => {
          setTimeout(() => {
-          signIn('credentials', { email: values.email, password: values.password })
-            .then(res => {
-              console.log("Res : ", res);
-            })
-            .catch(err => {
-              console.log("Error : ", err);
-            })
-          //  alert(JSON.stringify(values, null, 2));
+           alert(JSON.stringify(values, null, 2));
            setSubmitting(false);
          }, 400);
        }}
