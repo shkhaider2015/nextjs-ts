@@ -3,6 +3,7 @@ import formidable from 'formidable';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { backendUtils } from '../../../../utils';
 import {PrismaClient} from '@prisma/client'
+import { IResponseBody } from '../../../../interfaces';
 
 type Data = {
   id: string
@@ -43,7 +44,7 @@ export default async function handler(
   let user:any[] = []
   await prisma.user.findMany({
     where: {
-    email: email
+    email: email.toString()
       },
       }).then(res => {
         console.log("Res ", res);
@@ -61,6 +62,7 @@ export default async function handler(
     return
   }
   delete user[0]['password'];
+  
   res.status(200).json(user[0])
 }
 

@@ -50,7 +50,9 @@ const Navbar = () => {
           </Link>
         </div>
         <div className={`item item-effect`}>
+          <Link href={"login"}>
           <span>Login</span>
+          </Link>
         </div>
         <div className={`item item-effect`}>
           {" "}

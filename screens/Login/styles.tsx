@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const RegisterWrapper = styled.div`
+const LoginWrapper = styled.div`
    min-height: 89.5vh;
    min-width: 100vw;
    overflow-x: hidden;
@@ -26,4 +26,4 @@ const RegisterWrapper = styled.div`
    }
 `
 
-export default RegisterWrapper;
+export default LoginWrapper;

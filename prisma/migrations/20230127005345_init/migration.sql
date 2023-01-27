@@ -13,10 +13,10 @@ CREATE TABLE "Post" (
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "email" TEXT,
-    "password" TEXT,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ(5) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(5) NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

@@ -3,6 +3,7 @@ import formidable from 'formidable'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { backendUtils } from "../../../../utils"
 import { PrismaClient } from '@prisma/client'
+import { IResponseBody } from '../../../../interfaces'
 
 type Data = {
   name: string
@@ -22,6 +23,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any|Error>
 ) {
+  
   if (req.method === "POST") {
     const data:{ err: string, fields:formidable.Fields, files: formidable.Files } = await backendUtils.normalizeData(req);
     const validate = validation(data?.fields)
@@ -37,7 +39,7 @@ export default async function handler(
       let user:any[] = []
       await prisma.user.findMany({
         where: {
-          email: email
+          email: email.toString()
         }
       }).then(res => user = res)
       if(user.length && user[0].email === email ){ 
@@ -46,9 +48,9 @@ export default async function handler(
       }
       await prisma.user.create({
         data: {
-          name: name,
-          email: email,
-          password: backendUtils.encryptPassword(password)
+          name: name.toString(),
+          email: email.toString(),
+          password: backendUtils.encryptPassword(password.toString())
         },
       }).then(async res => {
         console.error("Res : ",res)
@@ -60,7 +62,11 @@ export default async function handler(
         await prisma.$disconnect()
         process.exit(1)
       })
-      res.status(200).json(data)
+      let responseBody:IResponseBody = {
+          error: null,
+          data: data
+      }
+      res.status(200).json(responseBody)
     }
   }
   else
