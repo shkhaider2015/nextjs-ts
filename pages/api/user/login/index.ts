@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { backendUtils } from '../../../../utils';
 import {PrismaClient} from '@prisma/client'
 import { IResponseBody } from '../../../../interfaces';
+import jwt from "jsonwebtoken";
 
 type Data = {
   id: string
@@ -62,8 +63,16 @@ export default async function handler(
     return
   }
   delete user[0]['password'];
-  
-  res.status(200).json(user[0])
+  const token = jwt.sign({
+    exp: Math.floor(Date.now() / 1000) + (60*1),
+    data: user[0]
+  }, 'secret')
+  res.status(200).json({
+    ...user[0],
+    accessToken: token,
+    refreshToken: token,
+    accessTokenExpiry: 60
+  })
 }
 
 
