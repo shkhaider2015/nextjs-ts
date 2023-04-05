@@ -36,10 +36,8 @@ const providers = [
                     email: credentials.email
                 })
 
-                // console.log("Data : ", user);
-
                 if (user.data.accessToken) {
-                    return user;
+                    return user.data;
                 }
 
                 return null;
@@ -51,24 +49,26 @@ const providers = [
 ]
 
 const callbacks = {
-    jwt: async ({ token, user }) => {
+    jwt: async ({token, user}) => {
         if (user) {
             // This will only be executed at login. Each next invocation will skip this part.
-            token.accessToken = user.data.accessToken;
-            token.accessTokenExpiry = user.data.accessTokenExpiry;
-            token.refreshToken = user.data.refreshToken;
+            token.accessToken = user.accessToken;
+            token.accessTokenExpiry = user.accessTokenExpiry;
+            token.refreshToken = user.refreshToken;
         }
 
         // If accessTokenExpiry is 24 hours, we have to refresh token before 24 hours pass.
-        // const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 60 * 1000) - Date.now());
+        const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 60 * 1000) - Date.now());
         
-        const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 1 * 1000) - Date.now());
+        // const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 1 * 1000) - Date.now());
 
         // If the token is still valid, just return it.
         if (shouldRefreshTime > 0) {
             return Promise.resolve(token);
         }
 
+        console.log("Token JJ ", token)
+        console.log("User JJ: ", user)
         // If the call arrives after 23 hours have passed, we allow to refresh the token.
         token = refreshAccessToken(token);
         return Promise.resolve(token);

@@ -1,6 +1,7 @@
 import formidable from "formidable"
 import CryptoJS from 'crypto-js'
 import { env } from "process"
+import jwt from "jsonwebtoken"
 
 const normalizeData = async (req:any) => {
     const data:{ err: string, fields:formidable.Fields, files: formidable.Files } = await new Promise((resolve, reject) => {
@@ -26,8 +27,32 @@ const decryptPassword = (x:string) => {
   return originalText
 }
 
+const generatesToken = (
+  data: any,
+  expireInDays: number
+): { accessToken: string; refreshToken: string } => {
+
+  let accessOption = {
+    expiresIn: expireInDays + 'm',
+  };
+  let refreshOption = {
+    expiresIn: (expireInDays*2) + 'm',
+  };
+
+  let secret = "It is my secret";
+
+  const accessToken = jwt.sign(data, secret, accessOption);
+  const refreshToken = jwt.sign(data, secret, refreshOption);
+  
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
+
 export default {
     normalizeData,
     encryptPassword,
-    decryptPassword
+    decryptPassword,
+    generatesToken
 }

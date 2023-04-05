@@ -1,87 +1,122 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import formidable from 'formidable';
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { backendUtils } from '../../../../utils';
-import {PrismaClient} from '@prisma/client'
-import { IResponseBody } from '../../../../interfaces';
+import formidable from "formidable";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { backendUtils } from "../../../../utils";
+import { PrismaClient } from "@prisma/client";
+import { IResponseBody } from "../../../../interfaces";
 import jwt from "jsonwebtoken";
 
 type Data = {
-  id: string
+  id: string;
   name: string;
   email: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 type Error = {
-  message: string | string[]
-}
+  message: string | string[];
+};
 
 export const config = {
   api: {
-    bodyParser: false
-  }
+    bodyParser: false,
+  },
 };
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data|Error>
+  res: NextApiResponse<Data | Error>
 ) {
-  if(req.method !== "POST") {
+  if (req.method !== "POST") {
     res.status(403).json({ message: `${req.method} request is not allowed` });
-    return
+    return;
   }
-  const data:{ err: string, fields:formidable.Fields, files: formidable.Files } = await backendUtils.normalizeData(req);
-  
-  const validate = validation(data?.fields)
-  if(validate.length > 0) {
-    res.status(401).json({message: validate})
-    return
+  const data: {
+    err: string;
+    fields: formidable.Fields;
+    files: formidable.Files;
+  } = await backendUtils.normalizeData(req);
+
+  const validate = validation(data?.fields);
+  if (validate.length > 0) {
+    res.status(401).json({ message: validate });
+    return;
   }
   const { email, password } = data.fields;
-  let user:any[] = []
-  await prisma.user.findMany({
-    where: {
-    email: email.toString()
+  let user: any[] = [];
+  await prisma.user
+    .findMany({
+      where: {
+        email: email.toString(),
       },
-      }).then(res => {
-        console.log("Res ", res);
-        user = res;
-      }).catch(err => {
-        console.log("Err ", err)
-      });
-  if(user.length === 0) {
-    res.status(400).json({ message: "Please register your email" })
-    return
+    })
+    .then((res) => {
+      // console.log("Res ", res);
+      user = res;
+    })
+    .catch((err) => {
+      // console.log("Err ", err);
+    });
+  if (user.length === 0) {
+    res.status(400).json({ message: "Please register your email" });
+    return;
   }
-  
-  if(backendUtils.decryptPassword(user[0]?.password) !== password) {
+
+  if (backendUtils.decryptPassword(user[0]?.password) !== password) {
     res.status(400).json({ message: "Password is incorrect" });
-    return
+    return;
   }
-  delete user[0]['password'];
-  const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (60*1),
-    data: user[0]
-  }, 'secret')
+  delete user[0]["password"];
+  const accessTokenExpiry = 2;
+  const tokens = getTokens(user[0], accessTokenExpiry);
+
   res.status(200).json({
     ...user[0],
-    accessToken: token,
-    refreshToken: token,
-    accessTokenExpiry: 60
-  })
+    ...tokens,
+    accessTokenExpiry: accessTokenExpiry * 60,
+  });
 }
 
-
-const validation = (data:any):string[] => {
-  let error:string[] = [];
-  if(!data.email || data.email === "") error.push("Email is required")
-  if(!data.password || data.password === "" ) error.push("Password is required")
-  if(data.email && !data.email?.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) error.push("Email is not valid")
-  if(data.password && data.password.length < 8) error.push("Password must be greater than 8 characters")
+const validation = (data: any): string[] => {
+  let error: string[] = [];
+  if (!data.email || data.email === "") error.push("Email is required");
+  if (!data.password || data.password === "")
+    error.push("Password is required");
+  if (
+    data.email &&
+    !data.email?.match(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )
+  )
+    error.push("Email is not valid");
+  if (data.password && data.password.length < 8)
+    error.push("Password must be greater than 8 characters");
 
   return error;
-}
+};
+
+const getTokens = (
+  data: any,
+  expireInDays: number
+): { accessToken: string; refreshToken: string } => {
+
+  let accessOption = {
+    expiresIn: expireInDays + 'm',
+  };
+  let refreshOption = {
+    expiresIn: (expireInDays*2) + 'm',
+  };
+
+  let secret = "It is my secret";
+
+  const accessToken = jwt.sign(data, secret, accessOption);
+  const refreshToken = jwt.sign(data, secret, refreshOption);
+  
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
