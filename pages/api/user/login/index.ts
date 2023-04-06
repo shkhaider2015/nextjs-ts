@@ -70,8 +70,8 @@ export default async function handler(
     return;
   }
   delete user[0]["password"];
-  const accessTokenExpiry = 2;
-  const tokens = getTokens(user[0], accessTokenExpiry);
+  const accessTokenExpiry = 2; // 2 minutes
+  const tokens = backendUtils.generatesToken(user[0], accessTokenExpiry);
 
   res.status(200).json({
     ...user[0],

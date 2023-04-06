@@ -8,8 +8,7 @@ async function refreshAccessToken(tokenObject) {
         // Get a new set of tokens with a refreshToken
         const tokenResponse = await axios.post('http://localhost:3000/api/' + 'auth/refreshToken', {
             token: tokenObject.refreshToken
-        }).then(res => console.log("Res : ss ", res))
-        .catch(err => console.log("Error : ", err))
+        });
 
         return {
             ...tokenObject,
@@ -58,7 +57,7 @@ const callbacks = {
         }
 
         // If accessTokenExpiry is 24 hours, we have to refresh token before 24 hours pass.
-        const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 60 * 1000) - Date.now());
+        const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 4 * 1000) - Date.now());
         
         // const shouldRefreshTime = Math.round((token.accessTokenExpiry - 60 * 1 * 1000) - Date.now());
 

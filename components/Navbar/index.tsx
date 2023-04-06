@@ -2,9 +2,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import NavbarWrapper from "./styles";
+import { signOut } from "next-auth/react";
+import { useAuth } from "../../hooks";
 
 const Navbar = () => {
   const { asPath } = useRouter();
+  const isAuthenticated = useAuth();
 
   return (
     <NavbarWrapper>
@@ -38,26 +41,38 @@ const Navbar = () => {
         </div>
       </div>
       <div className="col-2">
-        <div
-          className={`item ${
-            asPath.split("/")[1] === "register"
-              ? "item-selected"
-              : "item-effect"
-          } `}
-        >
-          <Link href={"register"}>
-            <span>Register</span>{" "}
-          </Link>
-        </div>
-        <div className={`item item-effect`}>
-          <Link href={"login"}>
-          <span>Login</span>
-          </Link>
-        </div>
-        <div className={`item item-effect`}>
-          {" "}
-          <span>Logout</span>
-        </div>
+        {!isAuthenticated ? (
+          <>
+            <div
+              className={`item ${
+                asPath.split("/")[1] === "register"
+                  ? "item-selected"
+                  : "item-effect"
+              } `}
+            >
+              <Link href={"register"}>
+                <span>Register</span>{" "}
+              </Link>
+            </div>
+            <div className={`item item-effect`}>
+              <Link href={"login"}>
+                <span>Login</span>
+              </Link>
+            </div>
+          </>
+        )
+        : <div
+        className={`item item-effect`}
+        onClick={() => {
+          signOut({ callbackUrl: "/login" });
+        }}
+      >
+        {" "}
+        <span>Logout</span>
+      </div>
+      }
+
+        
       </div>
     </NavbarWrapper>
   );
