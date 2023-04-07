@@ -1,4 +1,3 @@
-import { Main } from 'next/document';
 import Head from 'next/head';
 import React, { ReactFragment } from 'react';
 import LayoutWrapper from './styles';
