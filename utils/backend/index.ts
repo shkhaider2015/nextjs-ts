@@ -39,7 +39,7 @@ const generatesToken = (
     expiresIn: (expireInDays*2) + 'm',
   };
 
-  let secret = "It is my secret";
+  let secret = process.env.SECRET_KEY || '';
 
   const accessToken = jwt.sign(data, secret, accessOption);
   const refreshToken = jwt.sign(data, secret, refreshOption);

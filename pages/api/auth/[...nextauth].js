@@ -6,7 +6,7 @@ async function refreshAccessToken(tokenObject) {
     console.log("Refresh ", tokenObject)
     try {
         // Get a new set of tokens with a refreshToken
-        const tokenResponse = await axios.post('http://localhost:3000/api/' + 'auth/refreshToken', {
+        const tokenResponse = await axios.post('http://localhost:3000/api/' + 'user/refreshToken', {
             token: tokenObject.refreshToken
         });
 
@@ -85,8 +85,10 @@ const callbacks = {
 export const options = {
     providers,
     callbacks,
-    pages: {},
-    secret: 'your_secret'
+    pages: {
+        signIn: 'user/login',
+    },
+    secret: process.env.SECRET_KEY
 }
 
 const Auth = (req, res) => NextAuth(req, res, options)

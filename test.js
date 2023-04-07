@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 console.log("Test")
 let accessDate = new Date();
@@ -9,7 +9,7 @@ refreshDate.setDate(refreshDate.getDate() + 20)
 let refreshTimestamp = Math.floor(refreshDate.getTime() / 1000)
 let data = {
         name : 'shakeel',
-        email: 'shkhaider2015@gmail.com'
+        email: 'shkhaider2015556565656@gmail.com'
 }
 
 let accessOption = {

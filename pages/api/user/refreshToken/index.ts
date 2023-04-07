@@ -3,12 +3,16 @@ import { backendUtils } from "../../../../utils";
 import formidable from "formidable";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
+import { PrismaClient } from "@prisma/client";
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+
+const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +31,7 @@ export default async function handler(
 
   let { token } = data.fields;
   let decodedAccessToken: any = null;
-  let secret = "It is my secret";
+  let secret = process.env.SECRET_KEY || '';
   try {
     decodedAccessToken = jwt.verify(token.toString(), secret);
   } catch (error: any) {
@@ -51,21 +55,24 @@ export default async function handler(
 
     return;
   }
+  
+  let email = decodedAccessToken.email;
+  let user = await prisma.user
+  .findMany({
+    where: {
+      email: email.toString(),
+    },
+  });
 
-  // let currentTimeStamp = Math.floor(Date.now() / 1000);
-  // let refreshTokenExipry = Math.floor(decodedAccessToken?.exp);
-
-  // if (refreshTokenExipry < currentTimeStamp) {
-  //   res.status(400).json({
-  //     message: "Refresh Token is expired, Please login",
-  //   });
-  //   return;
-  // }
-
-  console.log("Data sss ", decodedAccessToken)
+  if(!user || _.isEmpty(user))
+  {
+    res.status(400).json({
+      message: 'User not found against this token'
+    })
+    return
+  }
   delete decodedAccessToken['iat'];
   delete decodedAccessToken['exp'];
-  console.log("Data sss After ", decodedAccessToken)
   const tokens = backendUtils.generatesToken(decodedAccessToken, 2)
 
   res.status(200).json({

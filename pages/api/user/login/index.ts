@@ -97,26 +97,3 @@ const validation = (data: any): string[] => {
 
   return error;
 };
-
-const getTokens = (
-  data: any,
-  expireInDays: number
-): { accessToken: string; refreshToken: string } => {
-
-  let accessOption = {
-    expiresIn: expireInDays + 'm',
-  };
-  let refreshOption = {
-    expiresIn: (expireInDays*2) + 'm',
-  };
-
-  let secret = "It is my secret";
-
-  const accessToken = jwt.sign(data, secret, accessOption);
-  const refreshToken = jwt.sign(data, secret, refreshOption);
-  
-  return {
-    accessToken,
-    refreshToken,
-  };
-};
