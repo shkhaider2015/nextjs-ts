@@ -12,6 +12,7 @@ const RefreshTokenHandler = (props) => {
             
             setInterval(timeRemaining > 0 ? timeRemaining : 0);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);
 
     return null;
