@@ -46,6 +46,7 @@ export default async function handler(
         res.status(400).json({message : "Email is already registered" })
         return
       }
+      let newUser = null
       await prisma.user.create({
         data: {
           name: name.toString(),
@@ -53,9 +54,9 @@ export default async function handler(
           password: backendUtils.encryptPassword(password.toString())
         },
       }).then(async res => {
-        console.error("Res : ",res)
+        const { password, ...others } = res
+        newUser = others;
         await prisma.$disconnect()
-
       })
       .catch(async err => {
         console.error("Error : ",err)
@@ -64,7 +65,7 @@ export default async function handler(
       })
       let responseBody:IResponseBody = {
           error: null,
-          data: data
+          data: newUser
       }
       res.status(200).json(responseBody)
     }

@@ -5,15 +5,13 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import {
   Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
 } from "formik";
 import * as yup from "yup";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
 
 const Register = () => {
+  const { push } = useRouter();
   return (
     <RegisterWrapper>
       <Formik
@@ -25,10 +23,16 @@ const Register = () => {
         }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+          axios.post('http://localhost:3000/api/'+'user/register', values)
+          .then(res => {
+            push("/login")
+          })
+          .catch((err:AxiosError) => {
+            console.log("Err ", err)
+          })
+          .finally(()=>{
             setSubmitting(false);
-          }, 400);
+          })
         }}
       >
         {({

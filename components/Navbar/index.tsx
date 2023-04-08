@@ -2,13 +2,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import NavbarWrapper from "./styles";
-import { signOut } from "next-auth/react";
-import { useAuth } from "../../hooks";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { asPath } = useRouter();
-  const isAuthenticated = useAuth();
+  const {status} = useSession();
 
+  
   return (
     <NavbarWrapper>
       <div className="col-1">
@@ -41,7 +41,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="col-2">
-        {!isAuthenticated ? (
+        {status === 'unauthenticated' ? (
           <>
             <div
               className={`item ${
