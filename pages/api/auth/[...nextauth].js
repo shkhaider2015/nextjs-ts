@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -29,6 +29,7 @@ const providers = [
         name: 'Credentials',
         authorize: async (credentials) => {
             try {
+                console.log("User --> Run ");
                 // Authenticate user with credentials
                 const user = await axios.post('http://localhost:3000/api/user/login', {
                     password: credentials.password,
@@ -38,10 +39,10 @@ const providers = [
                 if (user.data.accessToken) {
                     return user.data;
                 }
-
                 return null;
             } catch (e) {
-                throw new Error(e);
+                console.log("RRR ", e.response.data);
+                throw new Error(JSON.stringify({message : e.response.data.message}));
             }
         }
     })
@@ -86,7 +87,8 @@ export const options = {
     providers,
     callbacks,
     pages: {
-        signIn: 'user/login',
+        signIn: '/login',
+        error: '/login',
     },
     secret: process.env.SECRET_KEY
 }

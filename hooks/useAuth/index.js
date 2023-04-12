@@ -11,13 +11,13 @@ export default function useAuth(shouldRedirect) {
         if (session?.error === "RefreshAccessTokenError") {
             signOut({ callbackUrl: '/login', redirect: shouldRedirect });
         }
-
         if (session === null) {
             if (router.route !== '/login') {
                 router.replace('/login');
             }
             setIsAuthenticated(false);
         } else if (session !== undefined) {
+            console.log("pummy G ", router.route);
             if (router.route === '/login') {
                 router.replace('/');
             }

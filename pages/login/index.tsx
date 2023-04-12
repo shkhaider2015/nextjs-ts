@@ -1,9 +1,10 @@
 import Head from "next/head";
 import React from "react";
 import { Navbar, Layout } from "../../components"
-import { Login as LoginScreen } from "../../screens";
+import { Login as LoginScreen } from "../../src/screens";
+import { useRouter } from "next/router";
 
-const Login = ({data}:{data:string}) => {
+const Login = () => {
     return <Layout>
         <Head>
             <title>Login</title>
@@ -12,14 +13,5 @@ const Login = ({data}:{data:string}) => {
         <LoginScreen />
     </Layout>
 }
-
-export async function getServerSideProps() {
-    // Fetch data from external API
-    return {
-        props: {
-            data: "my data"
-        }
-    }
-  }
 
 export default Login;

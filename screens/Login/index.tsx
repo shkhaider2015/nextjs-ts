@@ -8,65 +8,13 @@ import {
 } from 'formik';
 import * as yup from 'yup';
 import { signIn } from "next-auth/react";
+import {Login as LoginScreen} from '../../src/screens'
+import { useRouter } from "next/router";
 
 const Login = () => {
+  
     return <LoginWrapper>
-            <Formik
-       initialValues={{ email: '', password: ''}}
-       validationSchema={schema}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-          signIn('credentials', { email: values.email, password: values.password })
-            .then(res => {
-              console.log("Res : ", res);
-            })
-            .catch(err => {
-              console.log("Error : ", err);
-            })
-          //  alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
-       }}
-     >
-       {({
-         values,
-         errors,
-         touched,
-         handleChange,
-         handleBlur,
-         handleSubmit,
-         isSubmitting,
-         /* and other goodies */
-       }) => (
-         <form onSubmit={handleSubmit} className="form" >
-
-    <div className="title">Login</div>
-           <InputField 
-                LeftIcon={MdEmail} 
-                type={'email'}
-                name={'email'}
-                placeholder={"Email Address"}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                maxLength={30}
-                error={errors.email && touched.email ? errors.email : "" }
-                />
-            <InputField
-                LeftIcon={RiLockPasswordFill}  
-                type={'password'}
-                name={'password'}
-                placeholder={"Password"}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                maxLength={20}
-                error={errors.password && touched.password ? errors.password : "" }
-            />
-            <Button type="submit" width="50%" title="Sign In" disabled={isSubmitting} />
-         </form>
-       )}
-     </Formik>
+           <LoginScreen />
     </LoginWrapper>
 }
 

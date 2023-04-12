@@ -14,6 +14,11 @@ const LoginWrapper = styled.div`
       text-align: center;
       margin: 20px 0px 20px 0px;
    }
+   .error {
+      color: #c51818;
+      font-size: 14px;
+      margin: 0px 0px 20px 0px;
+   }
 
    .form {
       display: flex;
