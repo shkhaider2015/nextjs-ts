@@ -1,12 +1,13 @@
 import axios, { AxiosError } from 'axios';
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import frontend from '../../../utils/frontend';
 
 async function refreshAccessToken(tokenObject) {
     console.log("Refresh ", tokenObject)
     try {
         // Get a new set of tokens with a refreshToken
-        const tokenResponse = await axios.post('http://localhost:3000/api/' + 'user/refreshToken', {
+        const tokenResponse = await axios.post(frontend.WebURL + 'api/user/refreshToken', {
             token: tokenObject.refreshToken
         });
 

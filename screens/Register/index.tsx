@@ -3,12 +3,11 @@ import { Button, InputField } from "../../components";
 import RegisterWrapper from "./styles";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import {
-  Formik,
-} from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import frontend from "../../utils/frontend";
 
 const Register = () => {
   const { push } = useRouter();
@@ -23,16 +22,17 @@ const Register = () => {
         }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting }) => {
-          axios.post('http://localhost:3000/api/'+'user/register', values)
-          .then(res => {
-            push("/login")
-          })
-          .catch((err:AxiosError) => {
-            console.log("Err ", err)
-          })
-          .finally(()=>{
-            setSubmitting(false);
-          })
+          axios
+            .post(frontend.WebURL + "api/user/register", values)
+            .then((res) => {
+              push("/login");
+            })
+            .catch((err: AxiosError) => {
+              console.log("Err ", err);
+            })
+            .finally(() => {
+              setSubmitting(false);
+            });
         }}
       >
         {({
@@ -45,12 +45,8 @@ const Register = () => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <form
-            onSubmit={handleSubmit}
-            className="form"
-          >
-
-      <div className="title">Register</div>
+          <form onSubmit={handleSubmit} className="form">
+            <div className="title">Register</div>
             <InputField
               LeftIcon={MdEmail}
               type={"text"}
