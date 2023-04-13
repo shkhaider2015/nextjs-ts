@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import { Navbar, Layout } from "../../components"
+import { Navbar, Layout } from "../../src/components"
 import { Register as RegisterScreen } from "../../src/screens";
 
 const Register = ({data}:{data:string}) => {

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { backendUtils } from "../../../../utils";
+import backendUtils  from "../../../../utils";
 import formidable from "formidable";
 import jwt from "jsonwebtoken";
 import _ from "lodash";

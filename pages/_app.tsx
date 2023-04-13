@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react';
-import {RefreshTokenHandler} from "../components"
+import {RefreshTokenHandler} from "../src/components"
 import React from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {

@@ -8,7 +8,7 @@ import * as yup from "yup";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import { useAuth } from "../../../hooks";
+import { useAuth } from "../../hooks";
 
 const Login = () => {
   const router = useRouter()

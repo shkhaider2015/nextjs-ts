@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import { Navbar, Layout } from "../../components"
+import { Navbar, Layout } from "../../src/components"
 import { Login as LoginScreen } from "../../src/screens";
 import { useRouter } from "next/router";
 

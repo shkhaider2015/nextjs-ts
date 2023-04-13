@@ -9,6 +9,8 @@ import {
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import Utils from "../../utils";
+import { useAuth } from "../../hooks";
 
 const Register = () => {
   const { push } = useRouter();
@@ -23,7 +25,7 @@ const Register = () => {
         }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting }) => {
-          axios.post('http://localhost:3000/api/'+'user/register', values)
+          axios.post(Utils.WebURL+'api/user/register', values)
           .then(res => {
             push("/login")
           })

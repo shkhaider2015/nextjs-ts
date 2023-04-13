@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
-import { Navbar, Layout } from "../../components"
-import { Contact as ContactScreen } from "../../screens";
+import { Navbar, Layout } from "../../src/components"
+import { Contact as ContactScreen } from "../../src/screens";
 
 const Contact = () => {
     return <Layout>

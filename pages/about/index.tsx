@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
-import { Navbar, Layout } from "../../components"
-import { About as AboutScreen } from "../../screens";
+import { Navbar, Layout } from "../../src/components"
+import { About as AboutScreen } from "../../src/screens";
 
 const About = () => {
     return <Layout>
