@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, InputField } from "../../components";
+import { Button, InputField } from "src/components";
 import RegisterWrapper from "./styles";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -10,9 +10,10 @@ import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import Utils from "../../utils";
-import { useAuth } from "../../hooks";
+import { useAuth } from "src/hooks";
 
 const Register = () => {
+  // let isAuthenticated = useAuth();
   const { push } = useRouter();
   return (
     <RegisterWrapper>

@@ -1,6 +1,6 @@
 import React from "react";
 import AboutWrapper from "./styles";
-import { useAuth } from "../../hooks";
+import { useAuth } from "src/hooks"
 
 const About = () => {
     let isAuthenticated = useAuth();

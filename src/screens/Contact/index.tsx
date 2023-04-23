@@ -1,6 +1,6 @@
 import React from "react";
 import ContactWrapper from "./styles";
-import { useAuth } from "../../hooks";
+import { useAuth } from "src/hooks";
 
 const Contact = () => {
     let isAuthenticated = useAuth();

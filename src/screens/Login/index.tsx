@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, InputField } from "../../components";
+import { Button, InputField } from "src/components";
 import LoginWrapper from "./styles";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -8,12 +8,12 @@ import * as yup from "yup";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import { useAuth } from "../../hooks";
+import { useAuth } from "src/hooks";
 
 const Login = () => {
   const router = useRouter()
   const {error} = router.query;
-  const yy = useAuth()
+  let isAuthenticated = useAuth();
   
   return (
     <LoginWrapper>
