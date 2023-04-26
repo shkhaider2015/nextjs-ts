@@ -52,16 +52,14 @@ const InputFieldWrapper = styled.div`
       background-color: #5a5a5a;
     }
 
-    &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill:active {
-    -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
-    -webkit-transition-delay: 9999s;
-  }
-    &[data-autocompleted] {
-      background-color: transparent !important;
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px #2e2d2d inset !important;
+      transition: -webkit-box-shadow 0.3s;
     }
+    &:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px #5a5a5a inset !important;
+    }
+
   }
 `;
 
