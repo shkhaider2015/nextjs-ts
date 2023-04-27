@@ -33,7 +33,7 @@ const providers = [
         authorize: async (credentials) => {
             try {
                 // Authenticate user with credentials
-                const user = await axios.post('http://localhost:3000/api/user/login', {
+                const user = await axios.post(frontendUtils.WebURL + 'api/user/login', {
                     password: credentials.password,
                     email: credentials.email
                 })
