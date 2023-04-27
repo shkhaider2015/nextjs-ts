@@ -9,28 +9,33 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { useAuth } from "src/hooks";
+import CryptoJS from "crypto-js";
+import FrontEndUtils from "src/utils";
 
 const Login = () => {
-  const router = useRouter()
-  const {error} = router.query;
+  const router = useRouter();
+  const { error } = router.query;
   let isAuthenticated = useAuth();
-  
+
   return (
     <LoginWrapper>
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting }) => {
-          signIn('credentials', { email: values.email, password: values.password })
-            .then(res => {
+          signIn("credentials", {
+            email: values.email,
+            password: values.password,
+          })
+            .then((res) => {
               console.log("Res : ", res);
             })
-            .catch(err => {
+            .catch((err) => {
               console.log("Error : ", err);
             })
-            .finally(()=>{
+            .finally(() => {
               setSubmitting(false);
-            })
+            });
         }}
       >
         {({
@@ -45,9 +50,11 @@ const Login = () => {
         }) => (
           <form onSubmit={handleSubmit} className="form">
             <div className="title">Login</div>
-            <div className="error">  {
-             error && !_.isEmpty(error) && !_.isArray(error) && JSON.parse(error)?.message
-            }  </div>
+            <div className="error">
+              
+              {typeof error === 'string' &&
+                  CryptoJS.AES.decrypt(error, FrontEndUtils.errorKey).toString(CryptoJS.enc.Utf8)}
+            </div>
             <InputField
               LeftIcon={MdEmail}
               type={"email"}

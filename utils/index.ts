@@ -50,9 +50,12 @@ const generatesToken = (
   };
 };
 
+const errorKey = 'FCBayernMunich2024'
+
 export default {
     normalizeData,
     encryptPassword,
     decryptPassword,
-    generatesToken
+    generatesToken,
+    errorKey
 }

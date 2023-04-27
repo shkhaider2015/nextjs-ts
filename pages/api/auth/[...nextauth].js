@@ -2,6 +2,8 @@ import axios, { AxiosError } from 'axios';
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 import frontendUtils from '../../../src/utils';
+import backendUtils from 'utils/index'
+import CryptoJS from 'crypto-js';
 
 async function refreshAccessToken(tokenObject) {
     console.log("Refresh ", tokenObject)
@@ -30,7 +32,6 @@ const providers = [
         name: 'Credentials',
         authorize: async (credentials) => {
             try {
-                console.log("User --> Run ");
                 // Authenticate user with credentials
                 const user = await axios.post('http://localhost:3000/api/user/login', {
                     password: credentials.password,
@@ -42,8 +43,8 @@ const providers = [
                 }
                 return null;
             } catch (e) {
-                console.log("RRR ", e.response.data);
-                throw new Error(JSON.stringify({message : e.response.data.message}));
+                const errorToken = CryptoJS.AES.encrypt(e.response.data.message, backendUtils.errorKey).toString()
+                throw new Error(errorToken);
             }
         }
     })
@@ -68,8 +69,6 @@ const callbacks = {
             return Promise.resolve(token);
         }
 
-        console.log("Token JJ ", token)
-        console.log("User JJ: ", user)
         // If the call arrives after 23 hours have passed, we allow to refresh the token.
         token = refreshAccessToken(token);
         return Promise.resolve(token);
